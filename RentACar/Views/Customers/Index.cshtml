@@ -1,0 +1,53 @@
+﻿@model IEnumerable<RentACar.Models.Customer>
+@{
+    ViewBag.Title = "Customers";
+}
+<h3>Klijenti</h3>
+
+@if (!Model.Any())
+{
+    <br/>
+    <p>Nema klijenata...</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Ime</th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th>Adresa</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var klijent in Model)
+            {
+                <tr>
+                    <td>@klijent.Name</td>
+                    <td>@klijent.Email</td>
+                    <td>@klijent.Phone</td>
+                    <td>@klijent.Address</td>
+                    <td class="akcije">
+                        @using (Html.BeginForm("Edit", "Customers", new { id = klijent.Id }))
+                        {
+                            <button type="submit" class="btn btn-black">Edit</button>
+                        }
+                    </td>
+                    <td class="akcije">
+                        @using (Html.BeginForm("Delete", "Customers", new { id = klijent.Id }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-black">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<button class="btn btn-black">@Html.ActionLink("Dodaj klijenta", "New", "Customers")</button>
+
+

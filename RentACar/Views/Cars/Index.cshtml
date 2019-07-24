@@ -1,0 +1,49 @@
+﻿@model IEnumerable<RentACar.Models.Car>
+@{
+    ViewBag.Title = "Cars";
+}
+<h3>Auta</h3>
+
+@if (!Model.Any())
+{
+    <p>Nema auta...</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Model auta</th>
+                <th>Tip auta</th>
+                <th>Opis</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var car in Model)
+            {
+                <tr>
+                    <td>@car.Name</td>
+                    <td>@car.CarType.Name</td>
+                    <td>@car.Description</td>
+                    <td class="akcije">
+
+                        @using (Html.BeginForm("Edit", "Cars", new { id = car.Id }))
+                        {
+                            <button type="submit" class="btn btn-black">Edit</button>
+                        }
+                    </td>
+                    <td class="akcije">
+                        @using (Html.BeginForm("Delete", "Cars", new { id = car.Id }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-black">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<button class="btn btn-black">@Html.ActionLink("Dodaj auto", "New", "Cars")</button>

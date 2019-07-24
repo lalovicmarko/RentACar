@@ -1,0 +1,44 @@
+﻿@model RentACar.ViewModels.RentalFormViewModel
+@{
+    ViewBag.Title = "RentalForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Rental.Id == 0)
+{
+    <h2>Dodaj fakturu</h2>
+}
+else
+{
+    <h2>Izmeni fakturu</h2>
+}
+
+@using (Html.BeginForm("Save", "Rentals", FormMethod.Post))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(s => s.Rental.CarId, "Auto")
+        @Html.DropDownListFor(s => s.Rental.CarId, new SelectList(Model.Cars, "Id", "Name"), "Izaberi auto", new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.Rental.CarId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.Rental.CustomerId, "Klijent")
+        @Html.DropDownListFor(s => s.Rental.CustomerId, new SelectList(Model.Customers, "Id", "Name"), "Izaberi klijenta", new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.Rental.CustomerId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.Rental.DateFrom, "Datum iznajmljivanja")
+        @Html.TextBoxFor(s => s.Rental.DateFrom, "{0:dd.MM.yyyy.}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.Rental.DateFrom)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.Rental.DateTo, "Datum vraćanja")
+        @Html.TextBoxFor(s => s.Rental.DateTo, "{0:dd.MM.yyyy.}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.Rental.DateTo)
+    </div>
+
+    @Html.HiddenFor(s => s.Rental.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-black">Sačuvaj</button>
+
+}

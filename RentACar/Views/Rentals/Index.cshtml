@@ -1,0 +1,51 @@
+﻿@model IEnumerable<RentACar.Models.Rental>
+@{
+    ViewBag.Title = "Rentals";
+}
+<h3>Fakture</h3>
+
+@if (!Model.Any())
+{
+    <p>Nema faktura!</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Auto</th>
+                <th>Klijent</th>
+                <th>Datum iznajmljivanja</th>
+                <th>Datum vraćanja</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var rental in Model)
+            {
+                <tr>
+                    <td>@rental.Car.Name</td>
+                    <td>@rental.Customer.Name</td>
+                    <td>@rental.DateFrom.ToShortDateString()</td>
+                    <td>@rental.DateTo.ToShortDateString()</td>
+                    <td class="akcije">
+                        @using (Html.BeginForm("Edit", "Rentals", new { id = rental.Id }))
+                        {
+                            <button type="submit" class="btn btn-black">Edit</button>
+                        }
+                    </td>
+                    <td class="akcije">
+                        @using (Html.BeginForm("Delete", "Rentals", new { id = rental.Id }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-black">Delete</button>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<button class="btn btn-black">@Html.ActionLink("Dodaj fakturu", "New", "Rentals")</button>
